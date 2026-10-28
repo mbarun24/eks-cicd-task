@@ -1,0 +1,52 @@
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: product-catalog
+  namespace: product-catalog
+  labels:
+    app: product-catalog
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: product-catalog
+
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+
+    spec:
+      containers:
+        - name: product-catalog
+          image: 245716172720.dkr.ecr.ap-southeast-2.amazonaws.com/product-catalog:v1
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 5000
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
