@@ -15,7 +15,7 @@ def home():
     return jsonify({
         "application": "Product Catalog API",
         "status": "running",
-        "version": "1.0"
+        "version": "2.0"
     })
 
 
